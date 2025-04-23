@@ -1,0 +1,12 @@
+<!-- timer.component.html -->
+<ng-container
+  *ngIf="timeLeft$ | async as timeLeft"
+>
+    <span
+      *ngIf="timeLeft"
+      [ngClass]="{'warn': timeLeft.totalMs < 3600000}">
+      {{ timeLeft.hrs }}h
+      {{ timeLeft.mins }}m
+      {{ timeLeft.secs }}s left
+  </span>
+</ng-container>

@@ -1,0 +1,20 @@
+<div class="todo-item">
+  <div class="title" matTooltip="{{todo.title}}">
+    {{ todo.title }}
+  </div>
+  <div class="meta">
+    <span>Created: {{ todo.createdAt | date:'short' }}</span>
+    <ng-container *ngIf="isToday(todo.expiration)">
+      <app-timer [expiration]="todo.expiration"></app-timer>
+    </ng-container>
+    <ng-container *ngIf="!isToday(todo.expiration)">
+      <span>Expires: {{ todo.expiration | date:'short' }}</span>
+    </ng-container>
+    <button mat-icon-button (click)="toggleFav()" [disabled]="pendingFav">
+      <mat-icon color="warn">{{ todo.isFavorite ? 'favorite' : 'favorite_border' }}</mat-icon>
+    </button>
+    <button mat-icon-button (click)="remove()" [disabled]="pendingDel">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>

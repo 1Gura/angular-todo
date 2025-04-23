@@ -1,0 +1,39 @@
+<mat-toolbar>
+  <button mat-icon-button (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>Add TODO</span>
+</mat-toolbar>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Title</mat-label>
+    <textarea matInput formControlName="title" rows="2"></textarea>
+    <mat-error *ngIf="(formControls.title.touched || submitted) && formControls.title.hasError('required')">
+      Title is required
+    </mat-error>
+    <mat-error *ngIf="formControls.title.hasError('maxlength')">
+      Max length is 100
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Expiration date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date" />
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngIf="(formControls.date.touched || submitted) && formControls.date.hasError('required')">
+      Date is required
+    </mat-error>
+    <mat-error *ngIf="formControls.date.hasError('past')">
+      Cannot be in the past
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Expiration time (optional)</mat-label>
+    <input matInput [ngxTimepicker]="tp" formControlName="time" readonly />
+    <ngx-material-timepicker #tp></ngx-material-timepicker>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" [disabled]="isSaving">Create</button>
+</form>
