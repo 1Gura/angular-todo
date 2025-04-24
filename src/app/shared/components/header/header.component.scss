@@ -1,0 +1,64 @@
+:host {
+  .app-header {
+    .container {
+      .active {
+        color: #f44336 ;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.mat-toolbar .mat-mdc-button-base:not(:disabled) {
+  color: var(--mdc-toolbar-container-text-color);
+}
+
+
+.app-header {
+  background: #eeeeee;
+  border-bottom: 1px solid #e0e0e0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+
+  .container {
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 16px;
+    font-weight: 500;
+    color: #424242;
+  }
+
+  nav {
+    margin-left: 16px;
+
+    .nav-list {
+      color: #a0a0a0;
+      list-style: none;
+      display: flex;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-item {
+      a.mat-button {
+        font-size: 14px;
+        text-transform: uppercase;
+        color: #a0a0a0;
+        transition: color 0.2s;
+
+        &:hover {
+          color: #616161;
+        }
+      }
+    }
+  }
+
+}

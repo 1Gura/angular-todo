@@ -1,0 +1,79 @@
+/* todo-table.component.scss */
+.todo-section {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 24px;
+
+  &__header {
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    background: #fafafa;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .todo-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+
+    /* Фиксированная высота строк */
+    tr.mat-header-row,
+    tr.mat-row {
+      height: 56px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    /* Убираем границу у последней строки */
+    tr.mat-row:last-child {
+      border-bottom: none;
+    }
+
+    /* Сброс отступов внутри ячеек, выравнивание по центру */
+    th.mat-header-cell,
+    td.mat-cell {
+      padding: 0;
+      box-sizing: border-box;
+      vertical-align: middle;
+    }
+
+    /* Стили для заголовков колонок */
+    th.mat-header-cell {
+      padding: 12px 16px;
+      font-weight: 600;
+      font-size: 13px;
+      color: #757575;
+      background: #fafafa;
+      text-align: left;
+    }
+
+    /* Стили для ячеек с данными */
+    td.mat-cell {
+      padding: 12px 16px;
+      font-size: 14px;
+      color: #212121;
+    }
+
+    /* Первая колонка: чекбокс + заголовок задачи */
+    .cell--title {
+
+      .title {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    /* Колонка действий: иконки кнопок */
+    .cell--actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}

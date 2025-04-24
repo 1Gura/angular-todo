@@ -6,12 +6,21 @@ import {Todo} from "../../models/todo";
 import {Router} from "@angular/router";
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatIcon} from "@angular/material/icon";
-import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
-import {MatInput} from "@angular/material/input";
+import {MatError, MatFormField, MatFormFieldModule, MatHint, MatLabel} from "@angular/material/form-field";
+import {MatInput, MatInputModule} from "@angular/material/input";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {NgIf} from "@angular/common";
-import {MatDatepicker, MatDatepickerInput} from "@angular/material/datepicker";
+import {
+  MatDatepicker,
+  MatDatepickerInput,
+  MatDatepickerModule,
+  MatDatepickerToggle
+} from "@angular/material/datepicker";
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import {noop} from "rxjs";
+import {expirationDateTimeValidator} from "../../../../shared/utility/experation-date-time-validator";
+import {parse12hTime} from "../../../../shared/utility/parse-time";
 
 @Component({
   selector: 'app-add-todo',
@@ -26,43 +35,72 @@ import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
     NgIf,
     MatDatepickerInput,
     MatDatepicker,
+    MatNativeDateModule,
     NgxMaterialTimepickerModule,
     MatButton,
     MatLabel,
-    MatError
+    MatError,
+    MatDatepickerToggle,
+    MatHint,
+    MatInputModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
   ],
   templateUrl: './add-todo.component.html',
   styleUrl: './add-todo.component.scss'
 })
 export class AddTodoComponent {
   form = this.fb.group({
-    title: ['', [Validators.required, Validators.maxLength(100)]],
-    date: ['', Validators.required],
-    time: ['']  // optional
-  });
+      title: ['', [Validators.required, Validators.maxLength(100)]],
+      date: ['', Validators.required],
+      time: ['']  // optional
+    },
+    {
+      validators: expirationDateTimeValidator
+    });
 
   submitted = false;
   isSaving = false;
+
+  readonly minDate: Date;
 
   constructor(
     private fb: FormBuilder,
     private todoService: TodoService,
     private router: Router
   ) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    this.minDate = today;
   }
 
   get formControls() {
     return this.form.controls;
   }
 
+  get dateControl() {
+    return this.formControls.date;
+  }
+
   onSubmit() {
     this.submitted = true;
-    if (this.form.invalid) return;
+
+    if (this.form.invalid) {
+      return;
+    }
 
     const {title, date, time} = this.form.value;
-    const [hours, minutes] = time ? time.split(':').map((v: string) => +v) : [0, 0];
-    const expiration = typeof date === 'string' ? new Date(date) : new Date();
+    const [hours, minutes] = time
+      ? parse12hTime(time)
+      : [0, 0];
+
+    const expiration = new Date(date as string);
+
+    debugger
     expiration.setHours(hours, minutes, 0, 0);
+
+    // И теперь это сравнение уже реально сработает,
+    // только если вы действительно выбрали прошлую дату/время
 
     if (expiration.getTime() < Date.now()) {
       this.formControls.date.setErrors({past: true});
@@ -77,13 +115,14 @@ export class AddTodoComponent {
       expiration: expiration.toISOString(),
       isFavorite: false
     };
-
+    debugger
     this.todoService.create(todo).subscribe(() => {
-      this.router.navigate(['/list']);
+      this.router.navigate(['/list']).then(noop);
     });
   }
 
+
   goBack() {
-    this.router.navigate(['/list']);
+    this.router.navigate(['/list']).then(noop);
   }
 }

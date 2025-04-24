@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {JSONSchema, StorageMap} from "@ngx-pwa/local-storage";
 import {BehaviorSubject, delay, map, Observable, of, tap} from "rxjs";
 import {Todo} from "../models/todo";
@@ -14,25 +14,29 @@ export class TodoService {
   private todos$ = new BehaviorSubject<Todo[]>([]);
   private inited = false;
 
-  constructor(private storage: StorageMap) {}
+  constructor(private storage: StorageMap) {
+  }
 
   private ensureInit(): Observable<Todo[]> {
     const todoSchema: JSONSchema = {
       type: 'object',
       properties: {
-        id:          { type: 'string' },
-        title:       { type: 'string', maxLength: 100 },
-        createdAt:   { type: 'string' },
-        expiration:  { type: 'string' },
-        isFavorite:  { type: 'boolean' },
+        id: {type: 'string'},
+        title: {type: 'string', maxLength: 100},
+        createdAt: {type: 'string'},
+        expiration: {type: 'string'},
+        isFavorite: {type: 'boolean'}
       },
-      required: ['id', 'title', 'createdAt', 'expiration', 'isFavorite']
+      required: ['id', 'title', 'createdAt', 'expiration', 'isFavorite'],
     };
+
     if (this.inited) {
       return of(this.todos$.value);
     }
-    return this.storage.get<Todo[]>(STORAGE_KEY, todoSchema).pipe(
-      map(data => data || []),
+    return this.storage.get(STORAGE_KEY).pipe(
+      map(data =>
+        Array.isArray(data) ? data : []
+      ),
       tap(list => {
         this.todos$.next(list);
         this.inited = true;

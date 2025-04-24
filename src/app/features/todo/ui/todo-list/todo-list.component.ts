@@ -5,6 +5,7 @@ import {TodoService} from "../../services/todo.service";
 import {ActivatedRoute} from "@angular/router";
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 import {TodoItemComponent} from "../todo-item/todo-item.component";
+import {TodoListWidgetComponent} from "../../../../shared/components/list-widget/todo-list-widget.component";
 
 @Component({
   selector: 'app-todo-list',
@@ -13,7 +14,8 @@ import {TodoItemComponent} from "../todo-item/todo-item.component";
     NgIf,
     AsyncPipe,
     NgForOf,
-    TodoItemComponent
+    TodoItemComponent,
+    TodoListWidgetComponent
   ],
   templateUrl: './todo-list.component.html',
   styleUrl: './todo-list.component.scss'

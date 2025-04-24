@@ -1,15 +1,8 @@
 <ng-container *ngIf="routeSnapshot === 'list'; else favOnly">
-  <h2>Today TODO's</h2>
-  <app-todo-item
-    *ngFor="let t of today$ | async"
-    [todo]="t">
-  </app-todo-item>
-
-  <h2>Other TODO's</h2>
-  <app-todo-item
-    *ngFor="let t of others$ | async"
-    [todo]="t">
-  </app-todo-item>
+  <app-todo-list-widget title="Today TODO's" [todos]="(today$ | async) ?? []">
+  </app-todo-list-widget>
+  <app-todo-list-widget title="Other TODO's" [todos]="(others$ | async) ?? []">
+  </app-todo-list-widget>
 </ng-container>
 
 <ng-template #favOnly>

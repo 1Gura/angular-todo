@@ -1,39 +1,93 @@
-<mat-toolbar>
+<mat-toolbar class="toolbar">
   <button mat-icon-button (click)="goBack()">
     <mat-icon>arrow_back</mat-icon>
   </button>
-  <span>Add TODO</span>
+  <span class="title">Add TODO</span>
 </mat-toolbar>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <mat-form-field appearance="fill">
-    <mat-label>Title</mat-label>
-    <textarea matInput formControlName="title" rows="2"></textarea>
-    <mat-error *ngIf="(formControls.title.touched || submitted) && formControls.title.hasError('required')">
-      Title is required
-    </mat-error>
-    <mat-error *ngIf="formControls.title.hasError('maxlength')">
-      Max length is 100
-    </mat-error>
-  </mat-form-field>
+<div class="form-wrapper">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-  <mat-form-field appearance="fill">
-    <mat-label>Expiration date</mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="date" />
-    <mat-datepicker #picker></mat-datepicker>
-    <mat-error *ngIf="(formControls.date.touched || submitted) && formControls.date.hasError('required')">
-      Date is required
-    </mat-error>
-    <mat-error *ngIf="formControls.date.hasError('past')">
-      Cannot be in the past
-    </mat-error>
-  </mat-form-field>
+    <div class="field-wrapper">
+      <mat-form-field appearance="fill" class="full">
+        <mat-label>Title</mat-label>
+        <textarea matInput formControlName="title" rows="2"></textarea>
+      </mat-form-field>
+      <div
+        class="error"
+        *ngIf="
+          (formControls.title.dirty && formControls.title.touched)
+            || submitted
+        ">
+        <span *ngIf="formControls.title.hasError('required')">
+          Title is required
+        </span>
+        <span *ngIf="formControls.title.hasError('maxlength')">
+          Max length is 100
+        </span>
+      </div>
+    </div>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Expiration time (optional)</mat-label>
-    <input matInput [ngxTimepicker]="tp" formControlName="time" readonly />
-    <ngx-material-timepicker #tp></ngx-material-timepicker>
-  </mat-form-field>
+    <div class="field-wrapper">
+      <mat-form-field appearance="fill" class="full">
+        <mat-label>Choose a date</mat-label>
+        <input formControlName="date" matInput [min]="minDate" [matDatepicker]="picker" />
 
-  <button mat-raised-button color="primary" [disabled]="isSaving">Create</button>
-</form>
+        <!-- this is the one that makes the little calendar icon show up -->
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+
+        <mat-datepicker #picker></mat-datepicker>
+
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-error *ngIf="dateControl.hasError('required')">Date is required</mat-error>
+      </mat-form-field>
+
+      <div
+        class="error"
+        *ngIf="
+          (formControls.date.dirty && formControls.date.touched)
+            || submitted
+        ">
+        <span *ngIf="formControls.date.hasError('required')">
+          Date is required
+        </span>
+        <span *ngIf="formControls.date.hasError('past')">
+          Cannot be in the past
+        </span>
+      </div>
+    </div>
+
+    <div class="field-wrapper">
+      <mat-form-field appearance="fill" class="full">
+        <mat-label>Expiration time (optional)</mat-label>
+        <input
+          matInput
+          [ngxTimepicker]="tp"
+          formControlName="time"
+          readonly
+        />
+        <ngx-material-timepicker-toggle matSuffix [for]="tp"></ngx-material-timepicker-toggle>
+        <ngx-material-timepicker #tp></ngx-material-timepicker>
+      </mat-form-field>
+
+      <div
+        class="error"
+        *ngIf="
+      (formControls.time.dirty && formControls.time.touched || submitted)
+      && form.hasError('pastDateTime')
+    ">
+        Expiration date & time must be in the future
+      </div>
+    </div>
+
+
+    <button
+      mat-raised-button
+      color="primary"
+      class="btn-create"
+      [disabled]="isSaving"
+    >
+      Create
+    </button>
+  </form>
+</div>

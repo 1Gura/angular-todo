@@ -1,4 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+/* Сбросим отступы и зададим 100% высоту корня */
+html, body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Делает <app-root> флекс-колонку на всю высоту */
+app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+
+a {
+  text-decoration: none; /* убираем подчёркивание */
+  color: inherit; /* наследуем цвет родителя */
+  outline: none; /* убираем обводку при фокусе */
+}
