@@ -42,14 +42,20 @@
         <div class="cell--actions">
           <button
             mat-icon-button
-            (click)="todo.isFavorite = !todo.isFavorite"
-            [disabled]="false"
+            (click)="toggleFavorite(todo)"
+            [disabled]="pendingFavorites.has(todo.id)"
           >
             <mat-icon color="warn">
               {{ todo.isFavorite ? 'favorite' : 'favorite_border' }}
             </mat-icon>
           </button>
-          <button mat-icon-button color="warn">
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="deleteTodo(todo.id)"
+            [disabled]="pendingDeletes.has(todo.id)"
+            aria-label="Delete todo"
+          >
             <mat-icon>delete</mat-icon>
           </button>
         </div>

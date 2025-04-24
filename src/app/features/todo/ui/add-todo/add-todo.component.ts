@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {TodoService} from "../../services/todo.service";
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {v4 as uuid} from 'uuid';
@@ -50,6 +50,7 @@ import {parse12hTime} from "../../../../shared/utility/parse-time";
   styleUrl: './add-todo.component.scss'
 })
 export class AddTodoComponent {
+  @Input() title = 'Add TODO'
   form = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(100)]],
       date: ['', Validators.required],
@@ -92,15 +93,11 @@ export class AddTodoComponent {
     const {title, date, time} = this.form.value;
     const [hours, minutes] = time
       ? parse12hTime(time)
-      : [0, 0];
+      : [23, 59];
 
     const expiration = new Date(date as string);
 
-    debugger
     expiration.setHours(hours, minutes, 0, 0);
-
-    // И теперь это сравнение уже реально сработает,
-    // только если вы действительно выбрали прошлую дату/время
 
     if (expiration.getTime() < Date.now()) {
       this.formControls.date.setErrors({past: true});
@@ -115,7 +112,6 @@ export class AddTodoComponent {
       expiration: expiration.toISOString(),
       isFavorite: false
     };
-    debugger
     this.todoService.create(todo).subscribe(() => {
       this.router.navigate(['/list']).then(noop);
     });

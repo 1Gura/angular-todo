@@ -1,11 +1,12 @@
-<mat-toolbar class="toolbar">
-  <button mat-icon-button (click)="goBack()">
-    <mat-icon>arrow_back</mat-icon>
-  </button>
-  <span class="title">Add TODO</span>
-</mat-toolbar>
+<div class="add-todo">
+  <div class="add-todo__header">
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span>{{title}}</span>
+  </div>
 
-<div class="form-wrapper">
+  <div class="form-wrapper">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
     <div class="field-wrapper">
@@ -38,7 +39,6 @@
 
         <mat-datepicker #picker></mat-datepicker>
 
-        <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-error *ngIf="dateControl.hasError('required')">Date is required</mat-error>
       </mat-form-field>
 
@@ -48,9 +48,6 @@
           (formControls.date.dirty && formControls.date.touched)
             || submitted
         ">
-        <span *ngIf="formControls.date.hasError('required')">
-          Date is required
-        </span>
         <span *ngIf="formControls.date.hasError('past')">
           Cannot be in the past
         </span>
@@ -91,3 +88,6 @@
     </button>
   </form>
 </div>
+
+</div>
+

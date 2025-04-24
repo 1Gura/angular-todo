@@ -6,9 +6,6 @@
 </ng-container>
 
 <ng-template #favOnly>
-  <h2>Favorite TODO's</h2>
-  <app-todo-item
-    *ngFor="let t of all$ | async"
-    [todo]="t">
-  </app-todo-item>
+  <app-todo-list-widget title="Favorite TODO's" [todos]="(all$ | async) ?? []">
+  </app-todo-list-widget>
 </ng-template>

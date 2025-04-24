@@ -17,6 +17,7 @@ import {MatCheckbox} from "@angular/material/checkbox";
 import {MatIcon} from "@angular/material/icon";
 import {AppTimerComponent} from "../../../features/todo/ui/app-timer/app-timer.component";
 import {MatIconButton} from "@angular/material/button";
+import {TodoService} from "../../../features/todo/services/todo.service";
 
 @Component({
   selector: 'app-todo-list-widget',
@@ -48,8 +49,32 @@ export class TodoListWidgetComponent {
 
   /** Определяем колонки */
   displayedColumns = ['select', 'createdAt', 'timeLeft', 'actions']
+  /** Для блокировки кнопок по id */
+  pendingFavorites = new Set<string>();
+  pendingDeletes   = new Set<string>();
 
-  constructor() {
+  constructor(private todoService: TodoService) {}
 
+  toggleFavorite(todo: Todo) {
+    this.pendingFavorites.add(todo.id);
+
+    const updated: Todo = {
+      ...todo,
+      isFavorite: !todo.isFavorite
+    };
+
+    this.todoService.update(updated).subscribe({
+      next: () => this.pendingFavorites.delete(todo.id),
+      error: () => this.pendingFavorites.delete(todo.id)
+    });
+  }
+
+  deleteTodo(id: string) {
+    this.pendingDeletes.add(id);
+
+    this.todoService.delete(id).subscribe({
+      next: () => this.pendingDeletes.delete(id),
+      error: () => this.pendingDeletes.delete(id)
+    });
   }
 }

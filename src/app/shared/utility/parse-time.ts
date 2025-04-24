@@ -1,5 +1,4 @@
 export function parse12hTime(value: string): [number, number] {
-  debugger
   const [timePart, period] = value.split(' ');
   let [h, m] = timePart.split(':').map(v => parseInt(v, 10));
 
